@@ -8,13 +8,13 @@
 
 using namespace std;
 
-const int LSIZE = 16+1;
+const int LSIZE = 8+1;
 const double KMAX = 3.*2.*M_PI;
 const double KMIN = 2.*M_PI/3./LSIZE;
 vector<vector<double>> XVEC;
 int XVOL;
 
-const double MM = 1e-2;
+const double MM = 1e-5;
 const double DT = 1e-2;
 const double QI = 15;
 
