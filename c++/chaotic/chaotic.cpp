@@ -145,7 +145,7 @@ vector<vector<vector<double>>> gaI(double t, const vector<vector<double>> &QPfie
 {
   double ks = KMIN*exp(t);
 
-  int Ntheta = ceil(M_PI*ks/KMIN);
+  int Ntheta = ceil(ks*LSIZE/2.); //ceil(M_PI*ks/KMIN);
   double Dtheta = M_PI/Ntheta;
   vector<double> thetai(Ntheta);
   for (size_t i = 0; i < Ntheta; i++) {
@@ -153,7 +153,7 @@ vector<vector<vector<double>>> gaI(double t, const vector<vector<double>> &QPfie
   }
 
   function<int(double)> Nphi = [ks](double theta){
-    return ceil(2.*M_PI*sin(theta)*ks/KMIN);
+    return ceil(sin(theta)*ks*LSIZE); //ceil(2.*M_PI*sin(theta)*ks/KMIN);
   };
   function<double(double)> Dphi = [Nphi](double theta){
     return 2.*M_PI/Nphi(theta);

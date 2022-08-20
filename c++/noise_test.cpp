@@ -8,10 +8,10 @@
 
 using namespace std;
 
-const int LSIZE = 16;
+const int LSIZE = 8+1;
 const double KMAX = 3.*2.*M_PI;
 const double KMIN = 2.*M_PI/3./LSIZE;
-const double KS = 1;
+const double KS = KMAX;
 vector<vector<double>> XVEC;
 int XVOL;
 
@@ -140,7 +140,7 @@ vector<double> hI(double t, const vector<double> &Wx)
 
 vector<vector<double>> gaI(double t, const vector<double> &Wx)
 {
-  int Ntheta = ceil(M_PI*KS/KMIN);
+  int Ntheta = ceil(KS*LSIZE/2.); //ceil(M_PI*KS/KMIN);
   double Dtheta = M_PI/Ntheta;
   vector<double> thetai(Ntheta);
   for (size_t i = 0; i < Ntheta; i++) {
@@ -148,7 +148,7 @@ vector<vector<double>> gaI(double t, const vector<double> &Wx)
   }
 
   function<int(double)> Nphi = [](double theta){
-    return ceil(2.*M_PI*sin(theta)*KS/KMIN);
+    return ceil(sin(theta)*KS*LSIZE); //ceil(2.*M_PI*sin(theta)*KS/KMIN);
   };
   function<double(double)> Dphi = [Nphi](double theta){
     return 2.*M_PI/Nphi(theta);
