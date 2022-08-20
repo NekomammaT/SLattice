@@ -8,7 +8,7 @@
 
 using namespace std;
 
-const int LSIZE = 8+1;
+const int LSIZE = 32+1;
 const double KMAX = 3.*2.*M_PI;
 const double KMIN = 2.*M_PI/3./LSIZE;
 vector<vector<double>> XVEC;
