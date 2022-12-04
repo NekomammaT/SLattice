@@ -44,6 +44,7 @@ int main()
   XVOL = XVEC.size();
 
   vector<vector<double>> Cmatrix(XVOL,vector<double>(XVOL,0));
+  vector<double> Wmean(XVOL,0);
   int Nsample = 1000, counter = 0;
 
   //#ifdef _OPENMP
@@ -56,6 +57,8 @@ int main()
     EM<vector<double>>(hI,gaI,t,Wx,1);
     
     for (int i=0; i<XVOL; i++) {
+      Wmean[i] += Wx[i];
+      
       for (int j=0; j<XVOL; j++) {
 	//#ifdef _OPENMP
 	//#pragma omp atomic
@@ -78,10 +81,12 @@ int main()
   cout << endl;
 
   Cmatrix *= 1./Nsample;
+  Wmean *= 1./Nsample;
 
   /*
   for (int i=0; i<XVOL; i++) {
     for (int j=0; j<XVOL; j++) {
+      Cmatrix[i][j] -= Wmean[i]*Wmean[j];
       cout << Cmatrix[i][j] << ' ';
     }
     cout << endl;
@@ -140,7 +145,7 @@ vector<double> hI(double t, const vector<double> &Wx)
 
 vector<vector<double>> gaI(double t, const vector<double> &Wx)
 {
-  int Ntheta = ceil(KS*LSIZE/2.); //ceil(M_PI*KS/KMIN);
+  int Ntheta = ceil(KS*LSIZE/2.); //* 10; //ceil(M_PI*KS/KMIN);
   double Dtheta = M_PI/Ntheta;
   vector<double> thetai(Ntheta);
   for (size_t i = 0; i < Ntheta; i++) {
@@ -148,7 +153,7 @@ vector<vector<double>> gaI(double t, const vector<double> &Wx)
   }
 
   function<int(double)> Nphi = [](double theta){
-    return ceil(sin(theta)*KS*LSIZE); //ceil(2.*M_PI*sin(theta)*KS/KMIN);
+    return ceil(sin(theta)*KS*LSIZE); //* 10; //ceil(2.*M_PI*sin(theta)*KS/KMIN);
   };
   function<double(double)> Dphi = [Nphi](double theta){
     return 2.*M_PI/Nphi(theta);
