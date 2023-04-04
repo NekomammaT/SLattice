@@ -6,8 +6,6 @@
 #include <omp.h>
 #endif
 
-//test
-
 using namespace std;
 
 const int LSIZE = 32+1;
